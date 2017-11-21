@@ -1,27 +1,43 @@
 FROM jupyter/datascience-notebook
-	
+
+USER root
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    fonts-dejavu \
+    tzdata \
+    gfortran \
+    gcc && apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 USER $NB_USER
 
-COPY environment.yml ./
+# R packages
+RUN conda install --quiet --yes \
+    'r-base=3.3.2' \
+    'r-irkernel=0.7*' \
+    'r-plyr=1.8*' \
+    'r-devtools=1.12*' \
+    'r-tidyverse=1.0*' \
+    'r-shiny=0.14*' \
+    'r-rmarkdown=1.2*' \
+    'r-forecast=7.3*' \
+    'r-rsqlite=1.1*' \
+    'r-reshape2=1.4*' \
+    'r-nycflights13=0.2*' \
+    'r-caret=6.0*' \
+    'r-rcurl=1.95*' \
+    'r-crayon=1.3*' \
+    'r-randomforest=4.6*' && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
 
-RUN conda env update --file=environment.yml
-    
-RUN echo "install.packages(c('data.table', 'ggplot2'), repos = 'http://cran.us.r-project.org')" | R --no-save
+USER $NB_USER
 
-RUN pip install --no-cache-dir bash_kernel && \
+RUN pip install --no-cache-dir bash_kernel allofplos seaborn&& \
     python -m bash_kernel.install --sys-prefix
 
 # add files to home directory and rename/reown
 USER root
 
 RUN apt-get update && apt-get install -y curl tmux screen nano traceroute asciinema hollywood libmagic-dev
-
-#COPY ./code_examples/ /home/$NB_USER/code_examples/
-
-# RUN mkdir /home/$NB_USER/code_examples && cd /home/$NB_USER/ && mv !(code_examples) code_examples
-
-#RUN usermod -G users $NB_USER && chown -R $NB_USER /home/$NB_USER/ && chgrp -R users /home/$NB_USER/
-
-USER $NB_USER
-
-RUN export USER=$NB_USER
