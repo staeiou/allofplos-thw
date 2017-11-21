@@ -1,4 +1,4 @@
-FROM jupyter/datascience-notebook
+FROM jupyter/datascience-notebook:latest
 
 USER root
 
@@ -34,10 +34,12 @@ RUN conda install --quiet --yes \
 
 USER $NB_USER
 
-RUN pip install --no-cache-dir bash_kernel allofplos seaborn&& \
+RUN pip install --no-cache-dir bash_kernel allofplos seaborn jupyterhub==0.7.2 && \
     python -m bash_kernel.install --sys-prefix
 
 # add files to home directory and rename/reown
 USER root
 
 RUN apt-get update && apt-get install -y curl tmux screen nano traceroute asciinema hollywood libmagic-dev
+
+RUN git clone https://github.com/PLOS/allofplos && python allofplos/allofplos/plos_corpus.py
