@@ -49,7 +49,7 @@ RUN git clone https://github.com/PLOS/allofplos
 
 WORKDIR allofplos
 
-RUN git remote add eseiver eseiver && git fetch eseiver && git checkout class_cleanup 
+RUN git remote add eseiver https://github.com/eseiver/allofplos && git fetch eseiver && git checkout class_cleanup 
 
 RUN pip install -e . && python -c  "from allofplos.plos_corpus import create_test_plos_corpus; create_test_plos_corpus()"
 
