@@ -45,7 +45,7 @@ USER root
 
 RUN apt-get update && apt-get install -y curl tmux screen nano traceroute asciinema hollywood libmagic-dev
 
-RUN git clone https://github.com/PLOS/allofplos && python allofplos/allofplos/plos_corpus.py
+RUN git clone https://github.com/PLOS/allofplos && pip install -e allofplos/
 
 
 
