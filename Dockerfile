@@ -47,6 +47,8 @@ RUN apt-get update && apt-get install -y curl tmux screen nano traceroute asciin
 
 RUN git clone https://github.com/PLOS/allofplos && git remote add eseiver eseiver && git fetch eseiver && git checkout class_cleanup 
 
+RUN pip install -e allofplos/ && python -c  "from allofplos.plos_corpus import create_test_plos_corpus; create_test_plos_corpus()"
+
 ADD smoke_test.py .
 
 
