@@ -45,7 +45,9 @@ USER root
 
 RUN apt-get update && apt-get install -y curl tmux screen nano traceroute asciinema hollywood libmagic-dev
 
-RUN git clone https://github.com/PLOS/allofplos
+USER $NB_USER
+
+RUN git clone https://github.com/PLOS/allofplos /home/$NB_USER/allofplos
 
 RUN pip install -e allofplos
 
@@ -53,6 +55,10 @@ ADD smoke_test.py .
 
 RUN python -c "from allofplos.plos_corpus import create_test_plos_corpus; create_test_plos_corpus()"
 
-RUN git clone https://github.com/eseiver/xml_tutorial
+RUN git clone https://github.com/eseiver/xml_tutorial /home/$NB_USER/xml_tutorial
 
-WORKDIR xml_tutorial
+ADD . /home/$NB_USER/
+
+RUN ls -lah && pwd
+
+WORKDIR /home/$NB_USER/
