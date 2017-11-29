@@ -45,9 +45,15 @@ USER root
 
 RUN apt-get update && apt-get install -y curl tmux screen nano traceroute asciinema hollywood libmagic-dev
 
-RUN git clone https://github.com/PLOS/allofplos && git remote add eseiver eseiver && git fetch eseiver && git checkout class_cleanup 
+RUN git clone https://github.com/PLOS/allofplos 
 
-RUN pip install -e allofplos/ && python -c  "from allofplos.plos_corpus import create_test_plos_corpus; create_test_plos_corpus()"
+WORKDIR allofplos
+
+RUN git remote add eseiver eseiver && git fetch eseiver && git checkout class_cleanup 
+
+RUN pip install -e . && python -c  "from allofplos.plos_corpus import create_test_plos_corpus; create_test_plos_corpus()"
+
+WORKDIR ..
 
 ADD smoke_test.py .
 
