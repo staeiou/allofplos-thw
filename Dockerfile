@@ -34,8 +34,11 @@ RUN conda install --quiet --yes \
 
 USER $NB_USER
 
-RUN pip install --no-cache-dir bash_kernel allofplos seaborn jupyterhub==0.7.2 && \
+RUN pip install --no-cache-dir bash_kernel seaborn jupyterhub==0.7.2 \
+    lxml==4.1.1 unidecode==0.04.21 && \
     python -m bash_kernel.install --sys-prefix
+
+
 
 # add files to home directory and rename/reown
 USER root
@@ -43,3 +46,6 @@ USER root
 RUN apt-get update && apt-get install -y curl tmux screen nano traceroute asciinema hollywood libmagic-dev
 
 RUN git clone https://github.com/PLOS/allofplos && python allofplos/allofplos/plos_corpus.py
+
+
+
