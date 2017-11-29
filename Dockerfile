@@ -51,8 +51,6 @@ RUN pip install -e allofplos
 
 ADD smoke_test.py .
 
-RUN python -c "from allofplos.plos_corpus import create_test_plos_corpus; create_test_plos_corpus()" 
+RUN python -c "from allofplos.plos_corpus import create_test_plos_corpus; create_test_plos_corpus()"
 
-RUN python smoke_test.py
-
-
+RUN git clone https://github.com/eseiver/xml_tutorial
